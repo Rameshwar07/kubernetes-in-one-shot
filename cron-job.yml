@@ -4,42 +4,44 @@ metadata:
   name: demo-job
   namespace: nginx-space
 spec:
-  schedules: "*/2 * * * *"
+  schedule: "*/1 * * * *"
   jobTemplate:
     spec:
       template:
         metadata:
           name: minute-backup
-        labels:
-          app: minute-backup
-      spec:
-      containers:
-      - name: backup-container
-        image: busybox:latest
-        command:
-          - sh
-          - -c
-          - > 
-            echo "Backkup started " ;
-            mkdir -p /backups &&
-            mkdir -p /demo-data &&
-            cp -r /demo-data /backups &&
-            echo "Backup Completed " ;
+          labels:
+            app: minute-backup
+        spec:
+          containers:
+            - name: backup-container
+              image: busybox:latest
+              command:
+                - sh
+                - -c
+                - >
+                  echo "Backup started" &&
+                  mkdir -p /backups &&
+                  mkdir -p /demo-data &&
+                  cp -r /demo-data /backups &&
+                  echo "Backup Completed"
 
-        volumeMounts:
-          - name: data-volume
-            mountPath: /demo-data
-          - name:
-            mountPath: /backups
-        restartPolicy: OnFailure
+              volumeMounts:
+                - name: data-volume
+                  mountPath: /demo-data
+                - name: backup-volume
+                  mountPath: /backups
 
-        volume:
-          - name: data-volume
-            hostPath:
-              path: /demo-data
-              type: DirectoryOrCreate
+          restartPolicy: OnFailure
 
-          - name: backup-volume
-            hostPath:
-              path: /backups
-              type: DirectoryOrCreate
+          volumes:
+            - name: data-volume
+              hostPath:
+                path: /demo-data
+                type: DirectoryOrCreate
+
+            - name: backup-volume
+              hostPath:
+                path: /backups
+                type: DirectoryOrCreate
+
