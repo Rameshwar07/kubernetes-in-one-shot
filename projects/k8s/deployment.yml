@@ -4,7 +4,7 @@ metadata:
   name: notes-app-deployment
   labels:
     app: notes-app
-  namespace: notes-app
+  namespace: nginx-space
 spec:
   replicas: 1
   selector:
@@ -16,7 +16,7 @@ spec:
         app: notes-app
     spec:
       containers:
-      - name: n0tes-app
+      - name: notes-app
         image: rameshwar07/notes-app-k8s
         ports:
         - containerPort: 8000
