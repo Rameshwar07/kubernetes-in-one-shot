@@ -1,0 +1,12 @@
+1. Remove the submodule directory
+
+git rm --cached kubestarter
+rm -rf kubestarter
+⚠️ The --cached flag removes the submodule from Git tracking, and rm -rf deletes the actual directory.
+
+2. Commit the change
+git commit -m "Remove submodule kubestarter"
+
+5. Push the change
+git push origin branch-name
+
